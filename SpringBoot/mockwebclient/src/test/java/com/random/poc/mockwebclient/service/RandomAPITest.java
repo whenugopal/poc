@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.reactive.function.client.ClientResponse;
@@ -39,6 +40,8 @@ class RandomAPITest {
 
         final var uriSpecMock = Mockito.mock(WebClient.RequestHeadersUriSpec.class);
         final var headersSpecMock = Mockito.mock(WebClient.RequestHeadersSpec.class);
+        when(mockedClientResponse.statusCode()).thenReturn(HttpStatus.OK);
+//        when(mockedClientResponse.statusCode().isError()).thenReturn(Boolean.FALSE);
         Mockito.doAnswer(invocationOnMock -> {
                     return invocationOnMock
                             .<Function<ClientResponse, Mono<Response>>>getArgument(0)
@@ -49,6 +52,7 @@ class RandomAPITest {
         when(webClient.get()).thenReturn(uriSpecMock);
         when(uriSpecMock.uri(ArgumentMatchers.<String>notNull())).thenReturn(headersSpecMock);
         randomAPI.fetch();
+
     }
 }
 

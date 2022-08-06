@@ -22,14 +22,13 @@ public class RandomAPI {
         return webClient
                 .get()
                 .uri("https://api.agify.io?name=michael")
-                /**.exchangeToMono(res -> {
+                .exchangeToMono(res -> {
                             if(res.statusCode().isError()) {
                                 return Mono.empty();
                             } else {
                                 return res.bodyToMono(Response.class);
                             }
                 });
-                 **/
-                .exchangeToMono(res -> res.bodyToMono(Response.class));
+                //.exchangeToMono(res -> res.bodyToMono(Response.class));
     }
 }
