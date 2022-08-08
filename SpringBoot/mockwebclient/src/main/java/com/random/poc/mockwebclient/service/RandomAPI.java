@@ -28,7 +28,9 @@ public class RandomAPI {
                             } else {
                                 return res.bodyToMono(Response.class);
                             }
-                });
+                })
+                .doFinally(res -> logger.info("hai"))
+                .doOnError(res -> logger.info("Error"));
                 //.exchangeToMono(res -> res.bodyToMono(Response.class));
     }
 }

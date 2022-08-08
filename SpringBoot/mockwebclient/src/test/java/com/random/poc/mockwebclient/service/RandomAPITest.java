@@ -6,6 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -14,10 +16,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoProcessor;
+import reactor.core.publisher.SignalType;
 import reactor.test.StepVerifier;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ContextConfiguration(classes = {RandomAPI.class})
@@ -35,6 +41,10 @@ class RandomAPITest {
     /**
      * Method under test: {@link RandomAPI#fetch()}
      */
+
+
+    @MockBean
+    private Mono<Response> mockedResponse;
     @Test
     void testFetch() {
 
@@ -49,9 +59,9 @@ class RandomAPITest {
                 })
                 .when(headersSpecMock)
                 .exchangeToMono(ArgumentMatchers.<Function<ClientResponse, Mono<Response>>>any());
+
         when(webClient.get()).thenReturn(uriSpecMock);
         when(uriSpecMock.uri(ArgumentMatchers.<String>notNull())).thenReturn(headersSpecMock);
-        randomAPI.fetch();
 
     }
 }
