@@ -6,6 +6,14 @@ provider:
   name: aws
   runtime: nodejs18.x
 
+plugins:
+  - serverless-s3-sync
+
+custom:
+  s3Sync:
+    - bucketName: whenu-serverless-poc
+      localDir: dummy
+
 functions:
   hello:
     handler: handler.hello
